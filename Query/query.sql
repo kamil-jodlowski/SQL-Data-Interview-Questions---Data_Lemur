@@ -537,3 +537,22 @@ FROM salary_cal)
 SELECT * FROM almost_done
 WHERE employee_name IS NOT NULL
 
+  
+--Advertiser Status [Facebook SQL Interview Question]
+
+  
+WITH mar AS (SELECT COALESCE(ad.user_id, dp.user_id) AS user_idd , ad.status , dp.paid , dp.status AS statuss
+FROM advertiser ad
+FULL OUTER JOIN daily_pay dp ON ad.user_id = dp.user_id)
+
+
+SELECT user_idd, 
+CASE 
+  WHEN paid IS NULL THEN 'CHURN'
+  WHEN paid IS NOT NULL AND status IN ('NEW', 'EXISTING', 'RESURRECT') THEN 'EXISTING'
+  WHEN paid IS NOT NULL AND status = 'CHURN' THEN 'RESURRECT'
+  WHEN paid IS NOT NULL AND status IS NULL THEN 'NEW'
+  END AS new_status 
+  FROM mar
+  ORDER BY user_idd ASC
+
