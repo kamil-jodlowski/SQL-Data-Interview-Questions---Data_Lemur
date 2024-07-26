@@ -556,3 +556,32 @@ CASE
   FROM mar
   ORDER BY user_idd ASC
 
+
+-- 3-Topping Pizzas [McKinsey SQL Interview Question]
+
+--1) 
+
+WITH combinations AS (SELECT pizza_toppings.topping_name , pizza_toppings.ingredient_cost , a.topping_name AS atopping_name  , a.ingredient_cost AS aingredient_cost, b.topping_name AS btopping_name , b.ingredient_cost AS bingredient_cost
+FROM pizza_toppings 
+JOIN pizza_toppings a ON pizza_toppings .topping_name < a.topping_name
+JOIN pizza_toppings b ON a.topping_name < b.topping_name
+)
+
+
+
+SELECT CONCAT(topping_name, ',', atopping_name, ',' , btopping_name) AS pizza,
+ingredient_cost + aingredient_cost + bingredient_cost AS total_cost
+FROM combinations
+ORDER BY total_cost DESC ,pizza;
+
+--2)
+
+SELECT 
+  CONCAT(p1.topping_name, ',', p2.topping_name, ',', p3.topping_name) AS pizza,
+  p1.ingredient_cost + p2.ingredient_cost + p3.ingredient_cost AS total_cost
+FROM pizza_toppings AS p1
+INNER JOIN pizza_toppings AS p2
+  ON p1.topping_name < p2.topping_name 
+INNER JOIN pizza_toppings AS p3
+  ON p2.topping_name < p3.topping_name 
+ORDER BY total_cost DESC, pizza;
