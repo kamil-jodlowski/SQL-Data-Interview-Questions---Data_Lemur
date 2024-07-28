@@ -585,3 +585,40 @@ INNER JOIN pizza_toppings AS p2
 INNER JOIN pizza_toppings AS p3
   ON p2.topping_name < p3.topping_name 
 ORDER BY total_cost DESC, pizza;
+
+--Repeated Payments [Stripe SQL Interview Question]
+WITH agregate AS (SELECT transaction_id , merchant_id , credit_card_id	, transaction_timestamp , amount , 
+DENSE_RANK() OVER (PARTITION BY merchant_id ORDER BY amount ASC) AS segregacja_merchant
+FROM transactions), 
+
+Segreg AS (SELECT transaction_id, merchant_id, credit_card_id, transaction_timestamp, amount, segregacja_merchant
+FROM agregate
+WHERE segregacja_merchant = 1), 
+ 
+
+dupa AS (SELECT transaction_id, merchant_id, credit_card_id, transaction_timestamp, amount, 
+ROW_NUMBER() OVER (PARTITION BY credit_card_id ORDER BY merchant_id ASC) AS seg_card
+FROM Segreg ), 
+
+godz AS (SELECT transaction_id, merchant_id, credit_card_id, transaction_timestamp, amount, 
+LAG(transaction_timestamp) OVER () AS transaction_timestamp2,
+DENSE_RANK() OVER (ORDER BY merchant_id) AS merchanty
+FROM dupa 
+WHERE seg_card <> 1 
+ORDER BY transaction_timestamp ASC),
+
+mer AS (SELECT transaction_id, merchant_id, credit_card_id, transaction_timestamp, amount, transaction_timestamp2, 
+merchanty, LAG(merchanty) OVER () AS merchanty2
+FROM godz),
+
+ostateczna_selekcja AS (SELECT transaction_id, merchant_id, credit_card_id, transaction_timestamp, amount, transaction_timestamp2, merchanty,merchanty2,
+CASE WHEN EXTRACT(EPOCH FROM (transaction_timestamp2 - transaction_timestamp)) / 60 <= 10 THEN 'Duplicate' 
+        ELSE 'OK' 
+    END AS status
+    FROM mer
+WHERE transaction_timestamp2 IS NOT NULL AND merchanty - merchanty2 = 0 
+)
+
+SELECT COUNT(*) AS payment_count
+FROM ostateczna_selekcja
+
