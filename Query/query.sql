@@ -622,3 +622,29 @@ WHERE transaction_timestamp2 IS NOT NULL AND merchanty - merchanty2 = 0
 SELECT COUNT(*) AS payment_count
 FROM ostateczna_selekcja
 
+--Server Utilization Time [Amazon SQL Interview Question]
+
+WITH servers AS (SELECT server_id , session_status, status_time, 
+DENSE_RANK() OVER (PARTITION BY server_id ORDER BY status_time) AS start_stop
+FROM server_utilization), 
+
+time_difference AS (SELECT server_id , session_status, status_time, start_stop,
+LAG(status_time) OVER (ORDER BY server_id) AS status_time_2
+FROM servers), 
+
+ready AS (SELECT server_id, session_status, status_time, start_stop, status_time_2,
+ABS(EXTRACT(DAY FROM (status_time - status_time_2))) AS roznica,
+DENSE_RANK() OVER (ORDER BY server_id) AS costam
+FROM time_difference), 
+
+sumka AS (SELECT server_id,session_status,status_time	start_stop, status_time_2, roznica, costam, 
+LAG(costam) OVER () AS costam2, 
+LAG(session_status) OVER () AS session_status_2
+FROM ready)
+
+SELECT SUM(roznica) AS total_uptime_days
+FROM sumka
+WHERE costam - costam2 = 0 AND session_status <> session_status_2
+
+
+
