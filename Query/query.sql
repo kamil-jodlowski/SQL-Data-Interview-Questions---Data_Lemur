@@ -646,5 +646,38 @@ SELECT SUM(roznica) AS total_uptime_days
 FROM sumka
 WHERE costam - costam2 = 0 AND session_status <> session_status_2
 
+--Department vs. Company Salary [FAANG SQL Interview Question]
 
+WITH joined AS (SELECT e.employee_id , e.name, e.department_id, s.payment_date, s.amount
+FROM employee AS e 
+JOIN salary AS s 
+ON e.employee_id = s.employee_id),
+
+company_total AS (SELECT employee_id, name, department_id,	payment_date, amount,
+DENSE_RANK() OVER (ORDER BY EXTRACT(MONTH FROM payment_date)) AS num1
+FROM joined),
+
+company_summary_for_march AS (SELECT AVG(amount) AS sumka, TO_CHAR(payment_date, 'MM-YYYY') AS payment_date
+FROM company_total
+WHERE num1 = 3
+GROUP BY payment_date ),
+
+
+for_each_departament AS (SELECT employee_id,	name,	department_id,	payment_date, amount,
+DENSE_RANK() OVER (PARTITION BY department_id ORDER BY payment_date) AS costam
+FROM joined),
+
+total_march_for_each_depart AS (SELECT department_id, TO_CHAR(payment_date, 'MM-YYYY') AS payment_date, AVG(amount) AS tot_amount
+FROM for_each_departament 
+WHERE costam = 3
+GROUP BY department_id, payment_date),
+
+comp AS (SELECT tmfed.department_id , tmfed.payment_date , tmfed.tot_amount, csfm.sumka
+FROM total_march_for_each_depart AS tmfed
+CROSS JOIN company_summary_for_march AS csfm) 
+
+SELECT department_id , payment_date , 
+CASE WHEN tot_amount < sumka THEN 'lower'
+WHEN tot_amount = sumka THEN 'same' ELSE 'higher' END AS comparison
+FROM comp
 
