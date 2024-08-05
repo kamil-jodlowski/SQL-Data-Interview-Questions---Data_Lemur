@@ -681,3 +681,14 @@ CASE WHEN tot_amount < sumka THEN 'lower'
 WHEN tot_amount = sumka THEN 'same' ELSE 'higher' END AS comparison
 FROM comp
 
+--Swapped Food Delivery [Zomato SQL Interview Question]
+
+WITH selekcja AS (SELECT order_id , item , CASE WHEN order_id % 2 = 0 THEN order_id - 1 ELSE order_id END AS inne 
+FROM orders),
+
+numbered AS (SELECT order_id , item , inne , DENSE_RANK() OVER (PARTITION BY inne ORDER BY order_id DESC) AS segregacja
+FROM selekcja)
+
+SELECT ROW_NUMBER() OVER () AS corrected_order_id, CASE WHEN segregacja = 1 THEN item ELSE item END AS item
+FROM numbered
+
