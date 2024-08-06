@@ -368,5 +368,13 @@ If the last item has an odd order ID, it should remain as the last item in the c
 
 In the results, return the correct pairs of order IDs and items.
 
+--FAANG Stock Min-Max (Part 1) [Bloomberg SQL Interview Question]
+The Bloomberg terminal is the go-to resource for financial professionals, offering convenient access to a wide array of financial datasets. As a Data Analyst at Bloomberg, you have access to historical data on stock performance.
+
+Currently, you're analyzing the highest and lowest open prices for each FAANG stock by month over the years.
+
+For each FAANG stock, display the ticker symbol, the month and year ('Mon-YYYY') with the corresponding highest and lowest open prices (refer to the Example Output format). Ensure that the results are sorted by ticker symbol.
+
+
 
 
