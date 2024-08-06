@@ -692,3 +692,27 @@ FROM selekcja)
 SELECT ROW_NUMBER() OVER () AS corrected_order_id, CASE WHEN segregacja = 1 THEN item ELSE item END AS item
 FROM numbered
 
+--FAANG Stock Min-Max (Part 1) [Bloomberg SQL Interview Question]
+
+WITH najwieksze AS (SELECT date , ticker , open, 
+ROW_NUMBER() OVER (PARTITION BY ticker ORDER BY open DESC ) AS numeracja
+FROM stock_prices),
+
+wyciagniete1 AS (SELECT * 
+FROM najwieksze 
+WHERE numeracja = 1), 
+
+najmniejsze AS (SELECT date , ticker , open, 
+ROW_NUMBER() OVER (PARTITION BY ticker ORDER BY open ASC ) AS numeracja2
+FROM stock_prices), 
+
+wyciagniete2 AS (SELECT * 
+FROM najmniejsze
+WHERE numeracja2 = 1),
+
+posegregowane AS (SELECT wyciagniete1.date AS date1, wyciagniete1.ticker AS ticker1 , wyciagniete1.open AS highest_open, wyciagniete1.numeracja, wyciagniete2.date AS date2, wyciagniete2.ticker AS ticker2, wyciagniete2.open AS lowest_open, wyciagniete2.numeracja2 
+FROM wyciagniete1
+JOIN wyciagniete2 ON wyciagniete1.ticker = wyciagniete2.ticker)
+
+SELECT posegregowane.ticker1, TO_CHAR(date1, 'Mon-YYYY') AS highest_mth , posegregowane.highest_open, TO_CHAR(date2, 'Mon-YYYY') AS lowest_mth , posegregowane.lowest_open
+FROM posegregowane
