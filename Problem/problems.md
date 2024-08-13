@@ -387,6 +387,19 @@ Write a query to determine the total number of tax filings made using TurboTax a
 
 If you find this question interesting, you may also want to try a similar question called Laptop vs Mobile Viewers!
 
+--Fill Missing Client Data [Accenture SQL Interview Question]
+
+When accessing Accenture's retailer client's database, you observe that the category column in products table contains null values.
+
+Write a query that returns the updated product table with all the category values filled in, taking into consideration the assumption that the first product in each category will always have a defined category value.
+
+Assumptions:
+
+Each category is expected to be listed only once in the column and products within the same category should be grouped together based on sequential product IDs.
+The first product in each category will always have a defined category value.
+For instance, the category for product ID 1 is 'Shoes', then the subsequent product IDs 2 and 3 will be categorised as 'Shoes'.
+Similarly, product ID 4 is 'Jeans', then the following product ID 5 is categorised as 'Jeans' category, and so forth.
+
 
 
 
