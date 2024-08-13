@@ -722,3 +722,14 @@ SELECT account_id , SUM(CASE WHEN transaction_type = 'Deposit' THEN amount ELSE 
 FROM transactions
 GROUP BY account_id
 
+--Fill Missing Client Data [Accenture SQL Interview Question]
+
+WITH numbered_category AS (SELECT product_id, category , name , 
+COUNT(category) OVER (ORDER BY product_id) AS x
+FROM products)
+
+SELECT product_id, 
+COALESCE(category, MAX(category) OVER (PARTITION BY x)) AS category , name 
+FROM numbered_category
+
+
