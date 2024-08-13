@@ -375,6 +375,18 @@ Currently, you're analyzing the highest and lowest open prices for each FAANG st
 
 For each FAANG stock, display the ticker symbol, the month and year ('Mon-YYYY') with the corresponding highest and lowest open prices (refer to the Example Output format). Ensure that the results are sorted by ticker symbol.
 
+--Final Account Balance [Paypal SQL Interview Question]
+
+Given a table containing information about bank deposits and withdrawals made using Paypal, write a query to retrieve the final account balance for each account, taking into account all the transactions recorded in the table with the assumption that there are no missing transactions.
+
+--QuickBooks vs TurboTax [Intuit SQL Interview Question]
+
+Intuit provides a range of tax filing products, including TurboTax and QuickBooks, available in various versions.
+
+Write a query to determine the total number of tax filings made using TurboTax and QuickBooks. Each user can file taxes once a year using only one product.
+
+If you find this question interesting, you may also want to try a similar question called Laptop vs Mobile Viewers!
+
 
 
 
