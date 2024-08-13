@@ -716,3 +716,9 @@ JOIN wyciagniete2 ON wyciagniete1.ticker = wyciagniete2.ticker)
 
 SELECT posegregowane.ticker1, TO_CHAR(date1, 'Mon-YYYY') AS highest_mth , posegregowane.highest_open, TO_CHAR(date2, 'Mon-YYYY') AS lowest_mth , posegregowane.lowest_open
 FROM posegregowane
+
+--Final Account Balance [Paypal SQL Interview Question]
+SELECT account_id , SUM(CASE WHEN transaction_type = 'Deposit' THEN amount ELSE -amount END) AS final_balance
+FROM transactions
+GROUP BY account_id
+
