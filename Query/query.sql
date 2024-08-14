@@ -732,4 +732,19 @@ SELECT product_id,
 COALESCE(category, MAX(category) OVER (PARTITION BY x)) AS category , name 
 FROM numbered_category
 
+--Spotify Streaming History [Spotify SQL Interview Question]
+WITH polaczenia AS (SELECT user_id , song_id , COUNT(listen_time) AS do_czwartego
+FROM songs_weekly
+WHERE EXTRACT(DAY FROM listen_time) <= 4
+GROUP BY user_id, song_id), 
+
+wszystko AS (SELECT * FROM polaczenia
+UNION ALL
+SELECT user_id , song_id, song_plays FROM songs_history)
+
+SELECT user_id , song_id , SUM(do_czwartego) AS song_plays
+FROM wszystko 
+GROUP BY user_id, song_id
+ORDER BY song_plays DESC
+
 
