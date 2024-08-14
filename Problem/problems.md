@@ -400,6 +400,19 @@ The first product in each category will always have a defined category value.
 For instance, the category for product ID 1 is 'Shoes', then the subsequent product IDs 2 and 3 will be categorised as 'Shoes'.
 Similarly, product ID 4 is 'Jeans', then the following product ID 5 is categorised as 'Jeans' category, and so forth.
 
+-- Spotify Streaming History [Spotify SQL Interview Question]
+
+You're given two tables containing data on Spotify users' streaming activity: songs_history which has historical streaming data, and songs_weekly which has data from the current week.
+
+Write a query that outputs the user ID, song ID, and cumulative count of song plays up to August 4th, 2022, sorted in descending order.
+
+Assume that there may be new users or songs in the songs_weekly table that are not present in the songs_history table.
+
+Definitions:
+
+song_weeklytable only contains data for the week of August 1st to August 7th, 2022.
+songs_history table contains data up to July 31st, 2022. The query should include historical data from this table.
+
 
 
 
