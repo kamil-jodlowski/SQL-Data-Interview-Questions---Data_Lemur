@@ -748,3 +748,13 @@ GROUP BY user_id, song_id
 ORDER BY song_plays DESC
 
 
+-- Most Expensive Purchase [Amazon SQL Interview Question]
+
+SELECT customer_id , MAX(purchase_amount)
+FROM transactions 
+GROUP BY customer_id
+ORDER BY MAX(purchase_amount) DESC
+
+
+
+
