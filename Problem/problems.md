@@ -413,6 +413,30 @@ Definitions:
 song_weeklytable only contains data for the week of August 1st to August 7th, 2022.
 songs_history table contains data up to July 31st, 2022. The query should include historical data from this table.
 
+--Most Expensive Purchase [Amazon SQL Interview Question]
+
+Amazon is trying to identify their high-end customers. To do so, they first need your help to write a query that obtains the most expensive purchase made by each customer. Order the results by the most expensive purchase first.
+
+--ApplePay Volume [Visa SQL Interview Question]
+Visa is analysing its partnership with ApplyPay. Calculate the total transaction volume for each merchant where the transaction was performed via ApplePay.
+
+Output the merchant ID and the total transactions. For merchants with no ApplePay transactions, output their total transaction volume as 0. Display the result in descending order of the transaction volume.
+
+Tip: You might want to check the spelling of the payment methods... just sayin' 👀
+
+--Subject Matter Experts [Accenture SQL Interview Question]
+
+You are tasked with identifying Subject Matter Experts (SMEs) at Accenture based on their work experience in specific domains. An employee qualifies as an SME if they meet either of the following criteria:
+
+They have 8 or more years of work experience in a single domain.
+They have 12 or more years of work experience across two different domains.
+Write a query to return the employee IDs of all the subject matter experts at Accenture.
+
+Assumption:
+
+An employee can only be considered an SME if they meet the experience requirements in either one or two domains. Cases where an employee has experience in more than two domains can be disregarded.
+Effective June 12th, 2023, the problem statement, assumption, and solution have been revised.
+
 
 
 
